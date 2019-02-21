@@ -1,0 +1,299 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="charset=UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>友家铺子</title>
+    <!-- css -->
+    <link rel="stylesheet" href="http://lm.adadmin.jd.com/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://lm.adadmin.jd.com/static/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="http://lm.adadmin.jd.com/static/css/style.css">
+    <style>
+        .form-control {
+            height: 30px;
+        }
+    </style>
+
+    <script src="http://lm.adadmin.jd.com/static/js/tools/jquery.min.js"></script>
+    <script src="http://lm.adadmin.jd.com/static/js/tools/bootstrap.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        var myDate = new Date();
+        var require = {
+            urlArgs: 'js_v=' + myDate.getSeconds()//requirejs中的版本号控制
+        };
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+    </script>
+
+    <!-- end js -->
+<body>
+<!-- header -->
+<div th:replace="/common/header::header"></div>
+<!-- end header -->
+<!-- content -->
+<div class="fixes-top">
+    <!--sidebar-menu-->
+    <div th:replace="/common/navbar::sidbar"></div>
+    <!--end-sidebar-menu-->
+
+    <!--container-->
+    <div id="frame">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)">友家铺子</a></li>
+                <li class="active">创建团购</li>
+            </ol>
+
+            <div class="blk-2x"></div>
+            <div class="data-filter clearfix">
+                <div class="form-group">
+                    <div class="row">
+                        <form class="form-inline" role="form">
+                            <div class="col-xs-10">
+                                <label class="form-label">输入SKU</label>
+                                <input  type="text" id="skuId" class="form-control"  placeholder="只能输入数字" />
+                            </div>
+                            <div class="col-xs-2">
+                                <a href='javascript:queryGoodMessage();' class='btn btn-default radius'><i class='ion-checkmark-round'></i>查询SKU</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <form class="form-inline" role="form">
+                            <div class="col-xs-10">
+                                <label class="form-label">团购活动简称</label>
+                                <input  type="text" id="name" class="form-control input-sm"   placeholder="最大长度为20字"  />
+                                <label class="form-label ">团购活动时间</label>
+                                <input type="text" id="startTime" name="startTime"  class="form-control form_datetime_begin "  readonly>
+                                <label class="form-label"> 至 &nbsp;&nbsp; </label>
+                                <input type="text" id="endTime" name="endTime" class="form-control form_datetime_end " readonly >
+                                <label class="form-label ">预计到货时间</label>
+                                <input type="text" id="receiveTime" name="endTime" class="form-control form_datetime_receive " readonly >
+                                <label class="form-label">团购活动库存</label>
+                                <input  type="text" id="activeStock" class="form-control input-sm"   placeholder="只能输入数字"  />
+                                <label class="form-label">最低成团件数</label>
+                                <input  type="text" id="minTmCount" class="form-control input-sm"   placeholder="只能输入数字"  />
+                                <label class="form-label">活动管理区域</label>
+                                <select class="form-control input-sm"id="regionId">
+                                </select>
+                                <label class="form-label">团购类型</label>
+                                <select class="form-control input-sm"id="activeType">
+                                    <option value="-1" selected>请选择</option>
+                                    <option value="0">到店自提（到店提）</option>
+                                    <option value="1">配送到家（团到家）</option>
+                                </select>
+                                <label class="form-label">用户类型</label>
+                                <select class="form-control input-sm"id="userType">
+                                    <option value="0" selected>所有人</option>
+                                    <option value="1">新人专享</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-2">
+                                <a href='javascript:addActive();' class='btn btn-success radius'><i class='ion-checkmark-round'></i>保存活动</a>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="form-group">
+                    <div class="row">
+                        <form class="form-inline" role="form">
+                            <div class="col-xs-2">
+                                <label class="form-label">单店配额上限基础值</label>
+                                <br>
+                                <label class="form-label" style="color: gray">针对所有店铺</label>
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <label><input type="radio" name="baseQuota" id="baseQuota1" value="-1">不限</label>
+                                    </div>
+                                    <div class="col-xs-1">
+                                    <label><input type="radio" name="baseQuota" id="baseQuota2" value="0">0</label>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <label><input type="radio" name="baseQuota" id="baseQuota3" value="1">数值</label>
+                                        <input type="number" class="form-control" id="baseQuotaValue" placeholder="须>=成团数" style="width: 120px" min="2">
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <label style="color: red;font-size: 12px;line-height: 1.6;">
+                                            *一定先选择基础值再填写特殊值，否则切换基础值选择，特殊值会被清空
+                                            <br>
+                                            *当基础为0，必须设置特殊值
+                                            <br>
+                                            *特殊值优先级>基础值
+                                            <br>
+                                            *特殊值最多100个
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <form class="form-inline" role="form">
+                            <div class="col-xs-2">
+                                <label class="form-label">单店配额上限特殊值</label>
+                                <br>
+                                <label class="form-label" style="color: gray">针对单个店铺</label>
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <label class="form-label">联盟ID </label>
+                                        <input type="text" class="form-control" id="individualQuotaJsonUnionId" placeholder="只能输入数字" >
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <a href='javascript:queryCommunityShop();' class='btn btn-default radius'><i class='ion-checkmark-round'></i>查询联盟ID</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="clo-xs-12" >
+                                        <table class="table table-striped margin-0">
+                                            <tbody id="individualQuotaJsonShopMsg">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <label id="individualQuotaJson1Lable"><input type="radio" name="individualQuotaJson" id="individualQuotaJson1" value="-1" >不限</label>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <label  id="individualQuotaJson2Lable"><input type="radio" name="individualQuotaJson" id="individualQuotaJson2" value="0" >0</label>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <div  id="individualQuotaJson3Lable">
+                                            <label><input type="radio" name="individualQuotaJson" id="individualQuotaJson3" value="1" >数值</label>
+                                            <input type="number" class="form-control" id="individualQuotaJsonValue" placeholder="须>=成团数" style="width: 120px" min="2">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <a href='javascript:addIndividualQuotaJson();' class='btn btn-default radius'><i class='ion-checkmark-round'></i>添加限额特殊值</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <div class="row">
+                        <div class="col-xs-10">
+                            <select class="js-example-basic-multiple" id="mySelect2" name="states[]" multiple="multiple" style="width:100%">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel border clearfix">
+                <div class="table-responsive datetable">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            SKU信息
+                        </div>
+                        <div class="col-xs-2" id="queryLimitArea">
+
+                        </div>
+                    </div>
+                    <table class="table table-striped margin-0">
+                        <thead>
+                        <tr>
+                            <td>SKU编号</td>
+                            <td>商品名称</td>
+                            <td>商家店铺名称</td>
+                            <td>划线价（元）</td>
+                            <td>后台京东价（元）</td>
+                           <!-- <td>京东价（元）</td>-->
+                            <td>商品库存</td>
+                            <td>返佣比例</td>
+                            <td>预估佣金/元</td>
+                            <td>上下架状态</td>
+                            <td>24小时限购数量</td>
+                            <td>是否支持7天无理由退货</td>
+                            <td>是否可开增值税发票</td>
+                        </tr>
+                        </thead>
+                        <tbody id = "tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://lm.adadmin.jd.com/static/js/jquery.form.js?js_v=$js_v"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/date/jquery-calendar.js?js_v=10"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/chart/highstock.js?js_v=10"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/chart/exporting.js?js_v=10"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/date/date.js?js_v=23"></script>
+<link rel="stylesheet" href="../../../jhtml/assets/css/bootstrap-datetimepicker.min.css">
+<script src="../../../jhtml/assets/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../../static/js/commonDateTimePicker.js"></script>
+<script src="../../../static/js/teamActiveAdd.js"></script>
+<!-- end content -->
+<!-- footer -->
+<!-- footer -->    <!-- end footer -->
+
+<!-- 限购区域（Modal）  start -->
+<div class="modal fade" id="limitAreaModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    限购区域
+                </h4>
+            </div>
+            <div class="modal-body">
+                <ul id="limitAreaTree" class="ztree"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<script src="../../../static/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../static/js/limitArea.js" type="text/javascript" charset="utf-8"></script>
+
+<link rel="stylesheet" type="text/css" href="../../../static/css/metroStyle/metroStyle.css"/>
+<style type="text/css">
+    #limitAreaTree{height: 400px;overflow: auto;}
+    #limitAreaTree.loading, #limitAreaTree.error{position: relative;}
+    #limitAreaTree.loading:before, #limitAreaTree.error:before{content:'';z-index:3;position: absolute;left:0;top:0;right:0;bottom:0;background: #fff url(../../../../static/images/loading.gif) center no-repeat;}
+    #limitAreaTree.error:before{background: #fff url(../../../static/images/error.png) center no-repeat;}
+</style>
+<!-- 限购区域（Modal）  end -->
+
+
+<div id="cli_dialog_div"></div>
+</body>
+</html>
