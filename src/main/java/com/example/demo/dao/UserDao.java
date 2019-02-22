@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component
 public interface UserDao {
-    @Select("select id,name,age from user where id=#{id}")
+
     public User findById(@Param("id") Long id);
 }
