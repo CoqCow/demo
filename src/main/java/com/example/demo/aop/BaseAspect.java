@@ -50,6 +50,10 @@ public class BaseAspect {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         //获取拦截的方法名称、请求参数
         String methodName = methodSignature.getName();
+        //访问路径不存在
+        if ("errorHtml".equals(methodName)) {
+            return joinPoint.proceed();
+        }
         if (args != null && args.length > 0) {
             JSONObject.toJSON(args);
         }
@@ -57,7 +61,7 @@ public class BaseAspect {
         LOGGER.info("请求执行开始，方法名《" + methodName + "》入参《》");
         //方法添加@CheckLogin注解，检验登录信息
 
-        //真是方法试行
+        //真实方法试行
         result = joinPoint.proceed();
 
         //方法执行完成，打印出参
