@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.annotation.CheckLogin;
+import com.example.demo.common.MyThreadLocal;
+import com.example.demo.common.Request;
+import com.example.demo.common.Response;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,7 +20,7 @@ public class HelloController {
     @RequestMapping("/t1")
     @ResponseBody
     @CheckLogin
-    public String hello() {
-        return "hello world";
+    public Response hello(Request request) {
+        return Response.error("成功");
     }
 }

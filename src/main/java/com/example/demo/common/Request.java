@@ -1,5 +1,7 @@
 package com.example.demo.common;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -8,7 +10,8 @@ import lombok.Data;
  * @create: 2019-02-25 11:34
  **/
 @Data
-public class Request {
+public class Request implements Serializable {
+    //通用参数
     private String appid;
     private Integer port;
     private String client;
@@ -20,5 +23,7 @@ public class Request {
     private String referer;
     private String uuid;
     private String networkType;
-    private String param;//业务参数
+    private String token;
+    //业务参数
+    private String param;
 }
