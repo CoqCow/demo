@@ -6,6 +6,7 @@ import com.example.demo.common.Request;
 import com.example.demo.common.Response;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,7 +21,7 @@ public class HelloController {
     @RequestMapping("/t1")
     @ResponseBody
     @CheckLogin
-    public Response hello(Request request) {
+    public Response hello(@RequestBody Request request) {
         return Response.error("成功");
     }
 }
