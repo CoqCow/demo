@@ -66,6 +66,9 @@ public class BaseAspect {
             if (args == null || args.length == 0) {
                 return Response.error("入参为空");
             }
+            if (!(args[0] instanceof Request)) {
+                return Response.error("请求参数格式错误呢");
+            }
             Request request = (Request) args[0];
             String paramStr = JSON.toJSONString(request);
             //方法执行前打印入参

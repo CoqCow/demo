@@ -6,6 +6,9 @@ import com.example.demo.domain.Person;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @program: union-jingtiao
  * @author: niuruobing
@@ -14,11 +17,14 @@ import org.junit.Test;
 public class SimpleTest1 {
     @Test
     public void test1() {
-        Person<String> person = new Person<>();
-        person.setCode(1);
-        person.setMsg("测试代码");
-        Object result = person;
-        byte[] bytes = JSONObject.toJSONString(result, SerializerFeature.WriteMapNullValue).getBytes();
+        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> param=new HashMap<>();
+        param.put("d","d");
+        param.put("d1","d1");
+        map.put("pin","d");
+        map.put("param",param);
+        map.put("pin","d");
+        byte[] bytes = JSONObject.toJSONString(map, SerializerFeature.WriteMapNullValue).getBytes();
         System.out.println(new String(bytes));
     }
 

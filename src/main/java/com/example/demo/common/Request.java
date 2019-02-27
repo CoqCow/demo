@@ -1,6 +1,7 @@
 package com.example.demo.common;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import lombok.Data;
 
@@ -25,5 +26,5 @@ public class Request implements Serializable {
     private String networkType;
     private String token;
     //业务参数
-    private String param;
+    private Map<String, Object> param;
 }
