@@ -3,6 +3,7 @@ package com.example.demo.aop;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.annotation.CheckLogin;
+import com.example.demo.annotation.FreeParam;
 import com.example.demo.common.ApiEnum;
 import com.example.demo.common.MyThreadLocal;
 import com.example.demo.common.Request;
@@ -63,6 +64,13 @@ public class BaseAspect {
             if ("errorHtml".equals(methodName)) {
                 return joinPoint.proceed();
             }
+            FreeParam freeParam = method.getAnnotation(FreeParam.class);
+            //自定义入参格式，必须加 FreeParam注解,不走统一拦截逻辑
+            if (null != freeParam) {
+                result = joinPoint.proceed();
+                return result;
+            }
+            //统一拦截处理逻辑，打印出入参数
             if (args == null || args.length == 0) {
                 return Response.error("入参为空");
             }

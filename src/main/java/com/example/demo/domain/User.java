@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -8,7 +10,7 @@ import lombok.Data;
  * @create: 2019-02-21 14:29
  **/
 @Data
-public class User {
+public class User implements Serializable {
     private Long id;
     private String name;
     private int age;

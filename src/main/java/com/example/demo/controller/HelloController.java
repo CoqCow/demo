@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.annotation.CheckLogin;
+import com.example.demo.annotation.FreeParam;
 import com.example.demo.common.MyThreadLocal;
 import com.example.demo.common.Request;
 import com.example.demo.common.Response;
@@ -33,10 +34,17 @@ public class HelloController {
     public Response hello(@RequestBody Request request) {
         log.info("执行到这里了");
         LoginRequest loginRequest = RequestUtil.convertRequestBizBean(LoginRequest.class, request);
-
         if (null == loginRequest) {
             return Response.error("请求参数错误哦");
         }
         return Response.error("成功" + JSONObject.toJSON(loginRequest));
     }
+
+    @RequestMapping("/t2")
+    @ResponseBody
+    @FreeParam
+    public Response free(String file) {
+        return Response.error("不走统一逻辑" + file);
+    }
+
 }
