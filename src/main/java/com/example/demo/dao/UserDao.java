@@ -1,6 +1,8 @@
 package com.example.demo.dao;
 
 import com.example.demo.dao.base.BaseCrudMapper;
+import com.example.demo.dao.base.BaseQueryParamMapper;
+import com.example.demo.dao.queryparam.UserQueryParam;
 import com.example.demo.domain.User;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -11,6 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Mapper
 @Component
-public interface UserDao extends BaseCrudMapper<User> {
+public interface UserDao extends BaseCrudMapper<User>, BaseQueryParamMapper<User, UserQueryParam> {
 
 }

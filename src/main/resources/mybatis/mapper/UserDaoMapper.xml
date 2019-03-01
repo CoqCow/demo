@@ -11,6 +11,15 @@
         id, name, age
     </sql>
 
+    <!-- 分页语句 -->
+    <sql id="page_sql">
+        <if test="pageSize!=null and offset!=null">
+            <![CDATA[
+			  limit #{pageSize} offset #{offset}
+		    ]]>
+        </if>
+    </sql>
+
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -20,7 +29,7 @@
 
     <insert id="insert" parameterType="com.example.demo.domain.User">
         insert into user
-        <trim prefix="(" suffix=">" suffixOverrides=",">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
@@ -44,4 +53,17 @@
         </trim>
     </insert>
 
+    <select id="findList" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where
+        <if test="name!=null">
+            name=#{name,jdbcType=VARCHAR}
+        </if>
+        <if test="age!=null">
+            age &lt; #{age,jdbcType=INTEGER}
+        </if>
+        <include refid="page_sql"/>
+    </select>
 </mapper>

@@ -8,7 +8,7 @@ import lombok.Data;
  * @create: 2019-02-27 16:48
  **/
 @Data
-public class LoginRequest {
+public class LoginRequest extends BaseRequest {
     /**
      * 用户名
      */
