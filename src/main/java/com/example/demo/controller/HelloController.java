@@ -37,7 +37,7 @@ public class HelloController {
 
     @RequestMapping("/t1")
     @ResponseBody
-    @CheckLogin
+    @CheckLogin(login = false)
     public Response hello(@RequestBody Request request) {
         log.info("执行到这里了");
         LoginRequest loginRequest = RequestUtil.convertRequestBizBean(LoginRequest.class, request);

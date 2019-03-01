@@ -13,5 +13,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckLogin {
-    String name() default "";
+    /**
+     * 登陆校验注解 ture 强校验  false 弱校验 不加注解不校验
+     */
+    boolean login() default true;
 }
