@@ -1,3 +1,4 @@
+
 package com.example.demo.aop;
 
 import com.alibaba.fastjson.JSON;
@@ -28,23 +29,25 @@ import javax.xml.crypto.Data;
 
 import afu.org.checkerframework.checker.oigj.qual.O;
 
+
 /**
  * @program: union-jingtiao
  * @author: niuruobing
  * @create: 2019-02-22 14:28
  **/
+
 @Aspect
 @Component
 public class BaseAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseAspect.class);
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) ||" +
+/*    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) ||" +
             "@annotation(org.springframework.web.bind.annotation.GetMapping) ||" +
             "@annotation(org.springframework.web.bind.annotation.PostMapping)")
     public void annotationPointCut() {
-    }
+    }*/
 
-    @Around("annotationPointCut()")
+    //@Around("annotationPointCut()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         MDC.clear();
         MDC.put("requestId", UUIDUtil.generateUUID());
@@ -103,6 +106,7 @@ public class BaseAspect {
         return result;
     }
 
+
     /**
      * @Param: []
      * @return: com.example.demo.common.ApiEnum
@@ -110,8 +114,10 @@ public class BaseAspect {
      * @Date: 2019/2/25
      * @Description:
      */
+
     private ApiEnum checkLogin(String token) {
         MyThreadLocal.set("pin", "666");
         return ApiEnum.SUCCESS;
     }
 }
+

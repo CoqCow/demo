@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IndexController {
     @RequestMapping("/active/query/index")
-    @CheckLogin(name = "index3")
     public String index1() {
         System.out.println("123");
         return "cshopActiveAttend";
@@ -21,11 +20,16 @@ public class IndexController {
 
     @RequestMapping("/active/index/send")
     public String index2() {
-        return "cshopActiveSend";
+        return "recruitManage";
     }
 
     @RequestMapping("/active/index/authority")
     public String index3() {
         return "cshopAuthority";
+    }
+
+    @RequestMapping("/goods/index")
+    public String index4() {
+        return "iframeCommunityGoods";
     }
 }

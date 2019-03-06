@@ -1,0 +1,658 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>友家铺子</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- css -->
+    <link rel="stylesheet" href="http://lm.adadmin.jd.com/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://lm.adadmin.jd.com/static/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="http://lm.adadmin.jd.com/static/css/style.css">
+
+
+    <script src="http://lm.adadmin.jd.com/static/js/tools/jquery.min.js"></script>
+    <script src="http://lm.adadmin.jd.com/static/js/tools/bootstrap.min.js"></script>
+    <script src="../../../static/js/commonDateTimePicker.js"></script>
+    <script src="../../../static/js/cshopEmoji.js"></script>
+    <script>
+        var myDate = new Date();
+        var require = {
+            urlArgs: 'js_v=' + myDate.getSeconds()//requirejs中的版本号控制
+        };
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+    </script>
+
+    <!-- end js -->
+<body>
+<!-- header -->
+<div th:replace="/common/header::header"></div>
+<!-- end header -->
+<!-- content -->
+<div class="fixes-top">
+    <!--sidebar-menu-->
+    <div th:replace="/common/navbar::sidbar"></div>
+    <!--end-sidebar-menu-->
+
+    <!--container-->
+
+    <div id="frame">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)">友家铺子</a></li>
+                <li class="active">店长招募管理</li>
+            </ol>
+
+            <div class="blk-2x"></div>
+            <div class="data-filter clearfix">
+                <form class="form-inline" id="queryForms" method="post" action="/community/user/list">
+                    <input id="pageIndex" name="pageIndex" type="hidden">
+                    <input id="sort" name="sort" value="desc" type="hidden">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12  col-xs-12">
+                            <div class="form-group-inline">
+                                <label class="xs-label">手机号：</label>
+                                <input type="text" oninput="value=value.replace(/[^\d]/g,'')" maxlength="11" class="form-control" name="mobile"
+                                       placeholder="输入11位手机号查询" id="mobile" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12  col-xs-12">
+                            <div class="form-group-inline">
+                                <label class="xs-label">申请时间：</label>
+                                <input type="text" id="startDate" name="startDate" class="form-control shop_regist_datetime_begin " readonly>
+                                <label class="xs-label"> 至 &nbsp;&nbsp; </label>
+                                <input type="text" id="endDate" name="endDate" class="form-control shop_regist_datetime_begin " readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group-inline">
+                                    <div class="form-group-inline">
+                                        <label>推广文案：&nbsp;&nbsp;</label>
+                                        <textarea id="romoteText" rows="10" cols="10" maxlength="10"
+                                                  placeholder="在此编辑推广文案，复制到微信可查看效果，限制500字"
+                                                  style="height: 100px;width: 260px"></textarea><br>
+                                    </div>
+                                    <img onclick="emojiClick(this);" id="emoji"
+                                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABPNJREFUeNq0VWtsFFUU/mZnX912291uW2m3WGCrrRiQlIpCGtAEJREjPxQTjBBCIjGRRCWiERMSFE2Ixh9GDL4IAf6YmEgiCZGX9oEkYsTyrH1AW9rSSne3u2xnd3Ye129ml6ZrMfiHm5zcmXvOnO/cc75zRhJC4F4uB+7xct5+WFIjz1C2H2gs4QVfoGzkax1vO4fPKcp1CHGVexvl+MrN3efu5Py3EQPS7RT9G6B1f+MWCHwg+10BucwLyS3D4XRAaDpEJgszrUJLaUjGREdaNb988e1rh+4KYB0oPz1cxOiOOcs8Lc7qEBw+HyBZ4LSzbE0DMDRAy1IIMhZFbMRUdENcDK/rfWx6oJY/53TEyaPzZQKedJUXLXVH5tKxBMg0cbj5zHIJkwB0rKs5nUOC674QqvyKL9k/saTn27m/0s2yO9bAWoYhtrmCnqWe+nmIXxvHUHsfMrEUvKEAap9qQbA+TAAF8f4eDJ26gExcgbfMjdoFpQhEKhGPjTfvfSd84NXdwxtmsOjY3gdmGYb5nndOLSM10HeiGxWLX8eju+KoaHoNfUdOM5z7KTUY+uUKKprftHXhVZ9j8NwEpEwSNfVul0vG4uda/E0zAAxdbPSGAyWSgzl2eqDE0qhe8Zats3YlGqf1bKasGvGRxJSufOFaJGI6v3HCLfGbkDr/iUW+rVS5ClJk6OZL7lIvneRzzvX99vXoPHIIjzz7MqqsA6lyKp0zdDKL63Cg1G+gyCkv58ksyvWpG+i6mC97nbnisaC+kN92MKDA3n0V1bQqorgRDFcW6IJVVkCS/a3LZZFNsFgoK7iBrpsyDDJE+Gy2RFa3oHmsDf6/EmhorERkzRu0SlOyqH36GTQPfIfSniQejBShdokFbto0liQBPWs67EgKADTTohHtdJuKwUgV1uzeYuccUnnOXtykxMimWVjz4VpA/RvIJMhvSopiWjQWbBETuSsVAJA6miYTPsdzOUkTT54Kk/mascFMnhtR2iRzdra9ZqXAFsEgs1nJnMEi3uByJsGkZjP0k0bbnpNQR7qoGKEM0ulAbrfeNd5ES9l2o71RtP1wI9fZBFBuGUhnzMFc6xcCfBe/zkhV5lmdxLJXnkfHnlZMdp3nO52qQ/mdaVGZDjWFydEMznzTicfXr2JgWRtk5IbAzbh+jC7VghRpurl/qE99N1STKraq4zTPYsX2TWj9aB88pZfQ+GQDKhqDdo3Gu2+h68RF3LyawOrdm+DuP053KhJRHX9ednR1dGUP00XcLsT0Yffp5oodcxeU7QzX8cDDnnCxBiWzcaV1FIPHz+DKuD1+0BACFmxYiZoGFv/aGRY6zQmSweEfhR5NiYNft2Y+podeDjutAOCTTUGZ0/iP+kVlC+vqWCeX2+5QlEdYdBbZWZzPJ1Mp2Fh9p+3IdUXFhU4dnd3SqS9+VrfRYowyPGOaLt81bhBo0Q5F/93IBpqqggmUBAminM81oD2uzSnGWDkfHtTQflooKRUnv2pXd9JNwnJ+x2man+HWlRbvW1/yfqQhuNXvSBRX1zhQXMIxUGr9CgTSkzomogZGR01c6kbP1XHzs6OX9A5+N0Hpn+7vP/9o1mqqc9Y/VC2vCxRhJadkrSxhHke6qpsYUzXRm8mKgYNn9T35FifNkPzfv8xpy1IE8uLNi5nrOih5Og7f9Z98r9Y/AgwARaF2ZCz1jZAAAAAASUVORK5CYII="/>
+                                    <div id="emojiArea" class="form-group-inline"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12  col-xs-12">
+                            <div class="form-group-inline">
+                                <label class="xs-label">区域：</label>
+                                <select class="form-control" name="region" id="region">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12  col-xs-12">
+                            <div class="form-group-inline">
+                                <label class="xs-label">城市：</label>
+                                <select class="form-control" name="city" id="city">
+                                    <option value="">===请选择===</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="xs-pull">
+                                    <span><input type="button" class="btn btn-md btn-info btn-xs-block queryFocus" id="searchPopDetail"
+                                                 value="查询"></span>
+                                <span><input type="button" class="btn btn-md btn-info btn-xs-block queryFocus" id="exportRecuitDetail"
+                                             onclick="exportTable();"
+                                             value="查询并导出"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+            </div>
+            <div class="panel border clearfix">
+                <div class="table-responsive datetable">
+                    <table class="table table-striped margin-0">
+                        <thead>
+                        <tr>
+                            <td>申请时间</td>
+                            <td>pin</td>
+                            <td>姓名</td>
+                            <td>手机号</td>
+                            <td>区域</td>
+                            <td>一级</td>
+                            <td>二级</td>
+                            <td>三级</td>
+                            <td>四级</td>
+                            <td>详细地址</td>
+                            <td>小区地址</td>
+                            <td>从何处获知</td>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <ul class="pagination margin-0 pull-right">
+                <li class="active"><a href="#" id="pageUp">上一页</a></li>
+                <li class="active"><a href="#" id="pageDown">下一页</a></li>
+            </ul>
+            <div class="row-1x">
+                <div class="pagination-input group-inline-1x  pull-right">
+                    <span class="vm inline-block offset-2x" id="totalpage">共1页</span><span class="col-fixed100 vm">
+                            <div class="input-group margin-0">
+                                <input id="gotopage" type="text" class="form-control" value="1">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="sureClick()">确定</button>
+                                </span>
+                            </div>
+                        </span>
+                </div>
+            </div>
+            <ul class="pagination margin-0 pull-right">
+                <li class="active"><a href="javascript:void(0);" id="pageNo">1</a></li>
+
+            </ul>
+
+
+            <script type="text/javascript">
+                var totalPage = 1;
+                var currentPage = 1;
+                $(".queryFocus").bind("click", function () {
+                    buildForm(currentPage);
+                    return false;
+                });
+                $("#pageUp").bind("click", function () {
+                    var page = currentPage - 1;
+                    if (page < 1) {
+                        return false;
+                    }
+                    buildForm(page);
+                    return false;
+                });
+                $("#pageDown").bind("click", function () {
+                    var page = currentPage + 1;
+                    if (page > totalPage) {
+                        return false;
+                    }
+                    buildForm(page);
+                    return false;
+                });
+
+                //跳转到指定页
+                function sureClick() {
+                    pageClick($("#gotopage").val());
+                    return false;
+                }
+
+                //跳转到上一页或者下一页
+                function pageClick(pageIndex) {
+                    if (!isLegalSearch(pageIndex)) {
+                        $("#gotopage").val("");
+                        return;
+                    }
+                    $("#pageIndex").val(pageIndex);
+                    buildForm(pageIndex);
+                    return false;
+                }
+
+                function toLocalDate(date) {
+                    if (date == null || date == undefined) {
+                        return "";
+                    }
+                    var timestamp4 = new Date(date);
+                    return timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8);
+                }
+
+                function getWxName(json) {
+                    try {
+                        json = $.parseJSON(json);
+                    } catch (er) {
+                        return "";
+                    }
+                    if (json == undefined || json == "" || json == null) {
+                        return "";
+                    }
+                    if (json.nickName == undefined || json.nickName == "" || json.nickName == null) {
+                        return "";
+                    }
+                    return json.nickName;
+                }
+
+                function getAttr(erp) {
+                    if (erp == undefined || erp == null || erp == "") {
+                        return "";
+                    }
+                    return erp;
+                }
+
+                function getDefault(param) {
+                    if (param == undefined || param == null || param == "") {
+                        return "无";
+                    }
+                    return param;
+                }
+
+                function buildForm(pageIndex) {
+                    $("#gotopage").val("");
+                    var pageSize = 10;
+                    var pageNo = pageIndex;
+                    var mobile = $("#mobile").val();
+                    var regionId = $("#region").val();
+                    if (regionId == -1) {
+                        regionId = null;
+                    }
+                    var city = $("#city").find("option:selected").text();
+
+                    var cityVal = $("#city").val();
+                    if (cityVal == "") {
+                        city = null;
+                    }
+
+                    var startDate = $("#startDate").val();
+                    var endDate = $("#endDate").val();
+                    $.ajax({
+                               url: '/enlist/list',
+                               type: 'get',
+                               dataType: 'json',
+                               data: {
+                                   pageNo: pageNo,
+                                   pageSize: pageSize,
+                                   regionId: regionId,
+                                   city: city,
+                                   mobile: mobile,
+                                   startTime: startDate,
+                                   endTime: endDate
+                               },
+                               success: function (data) {
+                                   $("#tbody").empty();
+                                   if (data.code != '200') {
+                                       alert(data.msg);
+                                       return false;
+                                   }
+                                   data = data.data;
+                                   data.result.forEach(function (item, index) {
+                                       var str = "";
+                                       str += "<tr>";
+                                       str += "<td class=\"textL\">";
+                                       str += toLocalDate(item.createTime);
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.pin;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.userName;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.mobile;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.region;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.province;
+                                       str += "</td>";
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.city;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.county;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.town;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.addressDetail;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.liveAreaName;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       if (item.source == '1') {
+                                           str += item.sourceName + "<br>" + "联盟id:";
+                                           if (item.unionId != null && item.unionId != '') {
+                                               str += item.unionId;
+                                           }
+                                       } else {
+                                           str += item.sourceName;
+                                       }
+                                       str += "</td>";
+                                       str += "</tr>";
+                                       $("#tbody").append(str);
+                                   })
+
+                                   totalPage = Math.ceil(data.total / pageSize);
+                                   $("#totalpage").text("共" + totalPage + "页");
+                                   $("#pageNo").text(pageNo);
+                                   currentPage = pageNo;
+                               },
+                               error: function () {
+                                   $("#tbody").empty();
+                               }
+                           });
+                    return false;
+                }
+
+                function buildFormForExportTable(pageIndex) {
+                    $("#gotopage").val("");
+                    var pageSize = 10;
+                    var pageNo = pageIndex;
+                    var mobile = $("#mobile").val();
+                    var regionId = $("#region").val();
+                    if (regionId == -1) {
+                        regionId = null;
+                    }
+                    var city = $("#city").find("option:selected").text();
+
+                    var cityVal = $("#city").val();
+                    if (cityVal == "") {
+                        city = null;
+                    }
+
+                    var startDate = $("#startDate").val();
+                    var endDate = $("#endDate").val();
+                    $.ajax({
+                               url: '/enlist/list',
+                               type: 'get',
+                               dataType: 'json',
+                               data: {
+                                   pageNo: pageNo,
+                                   pageSize: pageSize,
+                                   regionId: regionId,
+                                   city: city,
+                                   mobile: mobile,
+                                   startTime: startDate,
+                                   endTime: endDate
+                               },
+                               success: function (data) {
+                                   $("#tbody").empty();
+                                   if (data.code != '200') {
+                                       alert(data.msg);
+                                       return false;
+                                   }
+                                   data = data.data;
+                                   if (data == null || data.total == 0) {
+                                       alert('对不起，无数据可导出');
+                                       return false;
+                                   }
+                                   data.result.forEach(function (item, index) {
+                                       var str = "";
+                                       str += "<tr>";
+                                       str += "<td class=\"textL\">";
+                                       str += toLocalDate(item.createTime);
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.pin;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.userName;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.mobile;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.region;
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.province;
+                                       str += "</td>";
+                                       str += "</td>";
+                                       str += "<td class=\"textL\">";
+                                       str += item.city;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.county;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.town;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.addressDetail;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       str += item.liveAreaName;
+                                       str += "</td>"
+                                       str += "<td class=\"textL\">";
+                                       if (item.source == '1') {
+                                           str += item.sourceName + "<br>" + "联盟id:";
+                                           if (item.unionId != null && item.unionId != '') {
+                                               str += item.unionId;
+                                           }
+                                       } else {
+                                           str += item.sourceName;
+                                       }
+                                       str += "</td>";
+                                       str += "</tr>";
+                                       $("#tbody").append(str);
+                                   })
+
+                                   totalPage = Math.ceil(data.total / pageSize);
+                                   $("#totalpage").text("共" + totalPage + "页");
+                                   $("#pageNo").text(pageNo);
+                                   currentPage = pageNo;
+                                   return true;
+                               },
+                               error: function () {
+                                   $("#tbody").empty();
+                               }
+                           });
+                    return true;
+                }
+
+                $("#region").bind("change", function () {
+                    buildCity();
+                    return false;
+                });
+
+                function exportTable() {
+                    var mobile = $("#mobile").val();
+                    var regionId = $("#region").val();
+                    if (regionId == -1) {
+                        regionId = null;
+                    }
+                    var city = $("#city").find("option:selected").text();
+                    var cityVal = $("#city").val();
+                    if (cityVal == "") {
+                        city = null;
+                    }
+                    var startDate = $("#startDate").val();
+                    var endDate = $("#endDate").val();
+                    if (startDate == '' || endDate == '') {
+                        alert('请选择申请时间');
+                        return false;
+                    }
+                    var begin = new Date(startDate);
+                    var end = new Date(endDate);
+                    if (begin > end.getTime()) {
+                        alert('请选择正确的申请时间');
+                        return false;
+                    }
+                    end.setDate(end.getDate() - 7);
+                    if (begin.getTime() < end.getTime()) {
+                        alert('仅支持查询7天内数据');
+                        return false;
+                    }
+                    var res = buildFormForExportTable(1);
+                    if (!res) {
+                        return false;
+                    }
+                    regionId = regionId == null ? '' : regionId;
+                    city = city == null ? '' : city;
+                    window.location.href = "/enlist/export/table?startTime=" + startDate + "&endTime=" + endDate +
+                                           "&regionId=" + regionId + "&city=" + city + "&mobile=" + mobile;
+                    return false;
+                }
+
+                /**
+                 * 获取区域信息
+                 */
+                function buildRegion() {
+                    //清空下拉数据
+                    $("#region").html("");
+                    $.ajax({
+                               url: '/common/getRegions',
+                               type: 'get',
+                               dataType: 'json',
+                               success: function (data) {
+                                   if (data.code == 200) {
+                                       /*
+                                       //从服务器获取数据进行绑定
+                                       $.each(data.data, function (i, item) {
+                                           str += "<option value=" + i + ">" + item + "</option>";
+                                       })
+                                       //将数据添加到行销区域这个下拉框里面
+                                       $("#region").append(str);
+                                       */
+                                       $("#region").empty();
+                                       if (data.size > 1) {
+                                           $("#region").append("<option value=\"-1\" selected>全部</option>");
+                                       }
+                                       for (var key in data.data) {
+                                           var regionName = data.data[key];
+                                           if (regionName != "集团") {
+                                               var str = "<option value=\"" + key + "\">" + regionName + "</option>";
+                                               $("#region").append(str);
+                                           }
+                                       }
+
+                                   } else {
+                                       alert(data.msg);
+                                       window.location.href = "/no/verify";
+                                   }
+                                   buildCity();
+                               }
+                           });
+                }
+
+                /**
+                 * 获取城市信息
+                 */
+                function buildCity() {
+                    var region = $("#region").find("option:selected").text();
+                    var regionVal = $("#region").val();
+                    if (regionVal == "-1") {
+                        $("#city").html("<option value=''>===请选择===</option>");
+                        return;
+                    }
+                    //清空下拉数据
+                    $("#city").html("");
+
+                    var str = "<option  value=\"\">===请选择===</option>";
+                    $.ajax({
+                               url: '/community/shop/getCitys',
+                               type: 'get',
+                               dataType: 'json',
+                               data: {
+                                   region: region
+                               },
+                               success: function (data) {
+                                   if (data.code == 200) {
+                                       if (!data.data) {
+                                           return;
+                                       }
+                                       //从服务器获取数据进行绑定
+                                       $.each(data.data, function (i, item) {
+                                           str += "<option value=" + i + ">" + item + "</option>";
+                                       });
+                                       //将数据添加到行销区域这个下拉框里面
+                                       $("#city").append(str);
+                                   }
+                               }
+                           });
+                }
+
+                /**
+                 * 【分页显示】：
+                 * 获取总页数
+                 */
+                function getTotalPage() {
+                    return totalPage;
+                }
+
+                /**
+                 * 判断pageIndex是否合法
+                 * 1: 是否是数字 2:是否小于1 3:是否大于总页数
+                 */
+                function isLegalSearch(pageIndex) {
+                    var isLegal = false;
+                    if (!isPositiveInteger(pageIndex)) {
+                        alert('请输入一个合法的页数！');
+                        return isLegal;
+                    }
+                    if (pageIndex < 1) {
+                        alert('已经是第一页，请输入正确的页数！');
+                        return isLegal;
+                    }
+                    if (pageIndex > getTotalPage()) {
+                        alert('超过总页数，请输入正确的页数！');
+                        return isLegal;
+                    }
+                    isLegal = true;
+                    return isLegal;
+                }
+
+                //判断该对象是否是正的整数组成
+                function isPositiveInteger(number) {
+                    var result = false;
+                    var reg = /^[0-9]*[1-9][0-9]*$/;
+                    if (reg.test(number)) {
+                        result = true;
+                    }
+                    return result;
+                }
+
+                buildRegion();
+                buildForm(1);
+
+                //点击表情按钮
+                function emojiClick(that) {
+                    var src = that.getAttribute('src');
+                    if (src == emojiImg[0]) {
+                        that.setAttribute('src', emojiImg[Math.round(Math.random() * 10) + 1]);
+                        renderEmoji();
+                        $("#emojiArea").attr("style", "display:block;");//显示div
+                    } else {
+                        that.setAttribute('src', emojiImg[0]);
+                        $("#emojiArea").attr("style", "display:none;");//隐藏div
+                    }
+                }
+
+
+            </script>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="http://lm.adadmin.jd.com/static/js/jquery.form.js?js_v=$js_v"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/date/jquery-calendar.js?js_v=10"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/chart/highstock.js?js_v=10"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/chart/exporting.js?js_v=10"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/date/date.js?js_v=23"></script>
+<script src="http://lm.adadmin.jd.com/static/js/tools/date/date.js?js_v=23"></script>
+<link rel="stylesheet" href="../../../jhtml/assets/css/bootstrap-datetimepicker.min.css">
+<script src="../../../jhtml/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+
+<!-- end content -->
+<!-- footer -->
+<!-- footer -->    <!-- end footer -->
+
+
+<div id="cli_dialog_div"></div>
+</body>
+</html>                                                                                             

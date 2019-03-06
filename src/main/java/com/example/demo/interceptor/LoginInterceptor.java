@@ -26,7 +26,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (null == checkLogin) {
             System.out.println("不需要登陆校验");
         } else {
-            System.out.println("登陆校验通过" + checkLogin.name());
+            //System.out.println("登陆校验通过" + checkLogin.name());
         }
         return true;
     }
