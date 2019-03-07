@@ -18,14 +18,14 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/active/index/send")
+    @RequestMapping("/enlist")
     public String index2() {
         return "recruitManage";
     }
 
-    @RequestMapping("/active/index/authority")
+    @RequestMapping("/goods")
     public String index3() {
-        return "cshopAuthority";
+        return "iframeCommunityGoods.html";
     }
 
     @RequestMapping("/goods/index")
