@@ -11,13 +11,25 @@
         .form-control {
             height: 30px;
         }
-    </style>
 
+        .clsAAA {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .eArea {
+            display: inline-block;
+            height: 100px;
+            width: 260px;
+            margin-left: 30px;
+        }
+    </style>
+    <script src="../../../static/js/cshopEmoji.js"></script>
     <script src="http://lm.adadmin.jd.com/static/js/tools/jquery.min.js"></script>
     <script src="http://lm.adadmin.jd.com/static/js/tools/bootstrap.min.js"></script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <link rel="stylesheet" href="../../../jhtml/assets/css/select2.min.css">
+    <script src="../../../jhtml/assets/js/select2.min.js"></script>
     <script>
         var myDate = new Date();
         var require = {
@@ -26,7 +38,10 @@
         $.getUrlParam = function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
         }
     </script>
 
@@ -56,7 +71,7 @@
                         <form class="form-inline" role="form">
                             <div class="col-xs-10">
                                 <label class="form-label">输入SKU</label>
-                                <input  type="text" id="skuId" class="form-control"  placeholder="只能输入数字" />
+                                <input type="text" id="skuId" class="form-control" placeholder="只能输入数字"/>
                             </div>
                             <div class="col-xs-2">
                                 <a href='javascript:queryGoodMessage();' class='btn btn-default radius'><i class='ion-checkmark-round'></i>查询SKU</a>
@@ -72,36 +87,45 @@
                         <form class="form-inline" role="form">
                             <div class="col-xs-10">
                                 <label class="form-label">团购活动简称</label>
-                                <input  type="text" id="name" class="form-control input-sm"   placeholder="最大长度为20字"  />
+                                <input type="text" id="name" class="form-control input-sm" placeholder="最大长度为20字"/>
                                 <label class="form-label ">团购活动时间</label>
-                                <input type="text" id="startTime" name="startTime"  class="form-control form_datetime_begin "  readonly>
+                                <input type="text" id="startTime" name="startTime" class="form-control form_datetime_begin " readonly>
                                 <label class="form-label"> 至 &nbsp;&nbsp; </label>
-                                <input type="text" id="endTime" name="endTime" class="form-control form_datetime_end " readonly >
+                                <input type="text" id="endTime" name="endTime" class="form-control form_datetime_end " readonly>
                                 <label class="form-label ">预计到货时间</label>
-                                <input type="text" id="receiveTime" name="endTime" class="form-control form_datetime_receive " readonly >
+                                <input type="text" id="receiveTime" name="endTime" class="form-control form_datetime_receive " readonly>
                                 <label class="form-label">团购活动库存</label>
-                                <input  type="text" id="activeStock" class="form-control input-sm"   placeholder="只能输入数字"  />
+                                <input type="text" id="activeStock" class="form-control input-sm" placeholder="只能输入数字"/>
                                 <label class="form-label">最低成团件数</label>
-                                <input  type="text" id="minTmCount" class="form-control input-sm"   placeholder="只能输入数字"  />
+                                <input type="text" id="minTmCount" class="form-control input-sm" placeholder="只能输入数字"/>
                                 <label class="form-label">活动管理区域</label>
-                                <select class="form-control input-sm"id="regionId">
+                                <select class="form-control input-sm" id="regionId">
                                 </select>
-                                <label class="form-label">团购类型</label>
-                                <select class="form-control input-sm"id="activeType">
+                                <label class="form-label">配送类型</label>
+                                <select class="form-control input-sm" id="activeType">
                                     <option value="-1" selected>请选择</option>
-                                    <option value="0">到店自提（到店提）</option>
-                                    <option value="1">配送到家（团到家）</option>
+                                    <option value="0">到店自提（特惠团）</option>
+                                    <option value="1">配送到家（同城拼）</option>
                                 </select>
                                 <label class="form-label">用户类型</label>
-                                <select class="form-control input-sm"id="userType">
+                                <select class="form-control input-sm" id="userType">
                                     <option value="0" selected>所有人</option>
                                     <option value="1">新人专享</option>
-                                </select>
+                                </select><br>
+                                <div class="col-xs-12 clsAAA">
+                                    <label>推广文案：&nbsp;&nbsp;</label>
+                                    <textarea id="promoteText" maxlength="50"
+                                              placeholder="在此编辑推广文案，复制到微信可查看效果，限制500字"
+                                              style="height: 100px;width: 260px;vertical-align: bottom"></textarea>
+                                    <img nowrap onclick="emojiClick(this);" id="emoji"
+                                         style="vertical-align:top;"
+                                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABPNJREFUeNq0VWtsFFUU/mZnX912291uW2m3WGCrrRiQlIpCGtAEJREjPxQTjBBCIjGRRCWiERMSFE2Ixh9GDL4IAf6YmEgiCZGX9oEkYsTyrH1AW9rSSne3u2xnd3Ye129ml6ZrMfiHm5zcmXvOnO/cc75zRhJC4F4uB+7xct5+WFIjz1C2H2gs4QVfoGzkax1vO4fPKcp1CHGVexvl+MrN3efu5Py3EQPS7RT9G6B1f+MWCHwg+10BucwLyS3D4XRAaDpEJgszrUJLaUjGREdaNb988e1rh+4KYB0oPz1cxOiOOcs8Lc7qEBw+HyBZ4LSzbE0DMDRAy1IIMhZFbMRUdENcDK/rfWx6oJY/53TEyaPzZQKedJUXLXVH5tKxBMg0cbj5zHIJkwB0rKs5nUOC674QqvyKL9k/saTn27m/0s2yO9bAWoYhtrmCnqWe+nmIXxvHUHsfMrEUvKEAap9qQbA+TAAF8f4eDJ26gExcgbfMjdoFpQhEKhGPjTfvfSd84NXdwxtmsOjY3gdmGYb5nndOLSM10HeiGxWLX8eju+KoaHoNfUdOM5z7KTUY+uUKKprftHXhVZ9j8NwEpEwSNfVul0vG4uda/E0zAAxdbPSGAyWSgzl2eqDE0qhe8Zats3YlGqf1bKasGvGRxJSufOFaJGI6v3HCLfGbkDr/iUW+rVS5ClJk6OZL7lIvneRzzvX99vXoPHIIjzz7MqqsA6lyKp0zdDKL63Cg1G+gyCkv58ksyvWpG+i6mC97nbnisaC+kN92MKDA3n0V1bQqorgRDFcW6IJVVkCS/a3LZZFNsFgoK7iBrpsyDDJE+Gy2RFa3oHmsDf6/EmhorERkzRu0SlOyqH36GTQPfIfSniQejBShdokFbto0liQBPWs67EgKADTTohHtdJuKwUgV1uzeYuccUnnOXtykxMimWVjz4VpA/RvIJMhvSopiWjQWbBETuSsVAJA6miYTPsdzOUkTT54Kk/mascFMnhtR2iRzdra9ZqXAFsEgs1nJnMEi3uByJsGkZjP0k0bbnpNQR7qoGKEM0ulAbrfeNd5ES9l2o71RtP1wI9fZBFBuGUhnzMFc6xcCfBe/zkhV5lmdxLJXnkfHnlZMdp3nO52qQ/mdaVGZDjWFydEMznzTicfXr2JgWRtk5IbAzbh+jC7VghRpurl/qE99N1STKraq4zTPYsX2TWj9aB88pZfQ+GQDKhqDdo3Gu2+h68RF3LyawOrdm+DuP053KhJRHX9ednR1dGUP00XcLsT0Yffp5oodcxeU7QzX8cDDnnCxBiWzcaV1FIPHz+DKuD1+0BACFmxYiZoGFv/aGRY6zQmSweEfhR5NiYNft2Y+podeDjutAOCTTUGZ0/iP+kVlC+vqWCeX2+5QlEdYdBbZWZzPJ1Mp2Fh9p+3IdUXFhU4dnd3SqS9+VrfRYowyPGOaLt81bhBo0Q5F/93IBpqqggmUBAminM81oD2uzSnGWDkfHtTQflooKRUnv2pXd9JNwnJ+x2man+HWlRbvW1/yfqQhuNXvSBRX1zhQXMIxUGr9CgTSkzomogZGR01c6kbP1XHzs6OX9A5+N0Hpn+7vP/9o1mqqc9Y/VC2vCxRhJadkrSxhHke6qpsYUzXRm8mKgYNn9T35FifNkPzfv8xpy1IE8uLNi5nrOih5Og7f9Z98r9Y/AgwARaF2ZCz1jZAAAAAASUVORK5CYII="/>
+                                    <div id="emojiArea" class="eArea"></div>
+                                </div>
                             </div>
                             <div class="col-xs-2">
-                                <a href='javascript:addActive();' class='btn btn-success radius'><i class='ion-checkmark-round'></i>保存活动</a>
+                                <a href='javascript:addActive();' class='btn btn-success radius' id="addActive"><i class='ion-checkmark-round'></i>保存活动</a>
                             </div>
-
 
 
                         </form>
@@ -122,11 +146,12 @@
                                         <label><input type="radio" name="baseQuota" id="baseQuota1" value="-1">不限</label>
                                     </div>
                                     <div class="col-xs-1">
-                                    <label><input type="radio" name="baseQuota" id="baseQuota2" value="0">0</label>
+                                        <label><input type="radio" name="baseQuota" id="baseQuota2" value="0">0</label>
                                     </div>
                                     <div class="col-xs-3">
                                         <label><input type="radio" name="baseQuota" id="baseQuota3" value="1">数值</label>
-                                        <input type="number" class="form-control" id="baseQuotaValue" placeholder="须>=成团数" style="width: 120px" min="2">
+                                        <input type="number" class="form-control" id="baseQuotaValue" placeholder="须>=成团数" style="width: 120px"
+                                               min="2">
                                     </div>
                                     <div class="col-xs-5">
                                         <label style="color: red;font-size: 12px;line-height: 1.6;">
@@ -158,14 +183,14 @@
                                 <div class="row">
                                     <div class="col-xs-4">
                                         <label class="form-label">联盟ID </label>
-                                        <input type="text" class="form-control" id="individualQuotaJsonUnionId" placeholder="只能输入数字" >
+                                        <input type="text" class="form-control" id="individualQuotaJsonUnionId" placeholder="只能输入数字">
                                     </div>
                                     <div class="col-xs-2">
                                         <a href='javascript:queryCommunityShop();' class='btn btn-default radius'><i class='ion-checkmark-round'></i>查询联盟ID</a>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="clo-xs-12" >
+                                    <div class="clo-xs-12">
                                         <table class="table table-striped margin-0">
                                             <tbody id="individualQuotaJsonShopMsg">
 
@@ -175,19 +200,23 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-1">
-                                        <label id="individualQuotaJson1Lable"><input type="radio" name="individualQuotaJson" id="individualQuotaJson1" value="-1" >不限</label>
+                                        <label id="individualQuotaJson1Lable"><input type="radio" name="individualQuotaJson" id="individualQuotaJson1"
+                                                                                     value="-1">不限</label>
                                     </div>
                                     <div class="col-xs-1">
-                                        <label  id="individualQuotaJson2Lable"><input type="radio" name="individualQuotaJson" id="individualQuotaJson2" value="0" >0</label>
+                                        <label id="individualQuotaJson2Lable"><input type="radio" name="individualQuotaJson" id="individualQuotaJson2"
+                                                                                     value="0">0</label>
                                     </div>
                                     <div class="col-xs-3">
-                                        <div  id="individualQuotaJson3Lable">
-                                            <label><input type="radio" name="individualQuotaJson" id="individualQuotaJson3" value="1" >数值</label>
-                                            <input type="number" class="form-control" id="individualQuotaJsonValue" placeholder="须>=成团数" style="width: 120px" min="2">
+                                        <div id="individualQuotaJson3Lable">
+                                            <label><input type="radio" name="individualQuotaJson" id="individualQuotaJson3" value="1">数值</label>
+                                            <input type="number" class="form-control" id="individualQuotaJsonValue" placeholder="须>=成团数"
+                                                   style="width: 120px" min="2">
                                         </div>
                                     </div>
                                     <div class="col-xs-2">
-                                        <a href='javascript:addIndividualQuotaJson();' class='btn btn-default radius'><i class='ion-checkmark-round'></i>添加限额特殊值</a>
+                                        <a href='javascript:addIndividualQuotaJson();' class='btn btn-default radius'><i
+                                                class='ion-checkmark-round'></i>添加限额特殊值</a>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +255,7 @@
                             <td>商家店铺名称</td>
                             <td>划线价（元）</td>
                             <td>后台京东价（元）</td>
-                           <!-- <td>京东价（元）</td>-->
+                            <!-- <td>京东价（元）</td>-->
                             <td>商品库存</td>
                             <td>返佣比例</td>
                             <td>预估佣金/元</td>
@@ -236,7 +265,7 @@
                             <td>是否可开增值税发票</td>
                         </tr>
                         </thead>
-                        <tbody id = "tbody">
+                        <tbody id="tbody">
 
                         </tbody>
                     </table>
@@ -286,10 +315,29 @@
 
 <link rel="stylesheet" type="text/css" href="../../../static/css/metroStyle/metroStyle.css"/>
 <style type="text/css">
-    #limitAreaTree{height: 400px;overflow: auto;}
-    #limitAreaTree.loading, #limitAreaTree.error{position: relative;}
-    #limitAreaTree.loading:before, #limitAreaTree.error:before{content:'';z-index:3;position: absolute;left:0;top:0;right:0;bottom:0;background: #fff url(../../../../static/images/loading.gif) center no-repeat;}
-    #limitAreaTree.error:before{background: #fff url(../../../static/images/error.png) center no-repeat;}
+    #limitAreaTree {
+        height: 400px;
+        overflow: auto;
+    }
+
+    #limitAreaTree.loading, #limitAreaTree.error {
+        position: relative;
+    }
+
+    #limitAreaTree.loading:before, #limitAreaTree.error:before {
+        content: '';
+        z-index: 3;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff url(../../../../static/images/loading.gif) center no-repeat;
+    }
+
+    #limitAreaTree.error:before {
+        background: #fff url(../../../static/images/error.png) center no-repeat;
+    }
 </style>
 <!-- 限购区域（Modal）  end -->
 

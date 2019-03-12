@@ -28,8 +28,8 @@ public class IndexController {
         return "iframeCommunityGoods.html";
     }
 
-    @RequestMapping("/goods/index")
+    @RequestMapping("/active")
     public String index4() {
-        return "iframeCommunityGoods";
+        return "teamActiveAdd.html";
     }
 }
